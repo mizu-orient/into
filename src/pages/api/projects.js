@@ -6,7 +6,7 @@ const cors = Cors({
 });
 
 export default async function handler(req, res) { /* handlerはAPIのエンドポイント */
-    await runMiddleware(req, res, cors);
+    await runMiddleware(req, res, cors); /* corsを実行 */
 
     if(req.method === 'GET') {
         const projects = [
