@@ -1,88 +1,117 @@
-// コマンドを定義する
-
 const COMMANDS = [
-    {
-        command: "about",
-        description: "About me",
-    },
-    {
-        command: "education",
-        description: "My education",
-    },
-    {
-        command: "interests",
-        description: "My interests",
-    },
-    {
-        command: "skills",
-        description: "My skills",
-    },
-    {
-        command: "projects",
-        description: "My projects",
-    },
-    {
-        command: "contacts",
-        description: "Contact me",
-    },
-    {
-        command: "clear",
-        description: "Clear Terminal",
-    },
+  {
+    command: "about",
+    description: "About Me",
+  },
+  {
+    command: "history",
+    description: "My History",
+  },
+  {
+    command: "skills",
+    description: "My Tech Skills",
+  },
+  {
+    command: "projects",
+    description: "My Tech Projects",
+  },
+  {
+    command: "contact",
+    description: "Contact Me",
+  },
+  {
+    command: "blog",
+    description: "Open my blog",
+  },
+  {
+    command: "github",
+    description: "Open my github",
+  },
+  {
+    command:
+      // 'clear <span style="color: var(--primary)">(Ctrl+L shortcut)</span>',
+      "clear",
+    description: "Clear terminal",
+  },
 ];
 
-// asynchronous function 
 const getProjects = async () => {
-    const projects = await(await fetch("/api/projects")).json(); /* APIからプロジェクトを取得 */
-    const projectHTML = `<h3>Projects(scroll up & down)</h3>` + projects.map( /* プロジェクトのHTMLを作成 */
+  const projects = await (await fetch("/api/projects")).json();
+  const projectHTML =
+    `<h3>My Projects (You can scroll)</h3>` +
+    projects
+      .map(
         (project) => `<div class="command">
-                     <a href="${project.link}"
-                     target="_blank"><b class="command">${project.name}</b></a> - <b>${project.stack.join.(", ")}</b>
-                     <p class="meaning">${project.description}</p>
-                     </div>`
-        ).join(""); /* 配列を文字列に変換 */
-    return projectHTML; /* HTMLを返す */
+        <a href="${project.link}" target="_blank"><b class="command">${
+          project.name
+        }</b></a> - <b>${project.stack.join(", ")}</b>
+        <p class="meaning">${project.description}</p>
+      </div>`
+      )
+      .join("");
+  return projectHTML;
 };
 
 const getContacts = async () => {
-    const contactMediums = await(await fetch("/api/contacts")).json(); /* APIからコンタクトを取得 */
-    return contactMediums.map(
-        (contact) => `<div style="display: flex; justify-content: space-between;">
-        <p style="font-size: 15px">${contact.medium}</p>
-        <a class="meaning" href="${contact.link}" target="_blank">${contact.username}</a>
-        </div>`
-    ).join("");
+  const contactMediums = await (await fetch("/api/contacts")).json();
+  return contactMediums
+    .map(
+      (contact) => `<div style="display: flex; justify-content: space-between;">
+      <p style="font-size: 15px">${contact.medium}</p>
+      <a class="meaning" href="${contact.link}" target="_blank">${contact.username}</a>
+    </div>`
+    )
+    .join("");
 };
 
 export const CONTENTS = {
-    help: () => COMMANDS.map(
-        (command) => 
-        `
-        <div style="display: flex; justify-content: space-between;">
+  help: () =>
+    COMMANDS.map(
+      (command) => `<div style="display: flex; justify-content: space-between;">
         <p style="font-size: 15px">${command.command}</p>
         <p>${command.description}</p>
-        </div>
-        `
+      </div>`
     ).join("") +
-        `
-        <br/>
-        <div class="command">Type one of the above to view. e.g. <span style="color: var(--secondary)">about</span>
-        </div>`,
-    about: () => `My name is John Doe. I am ${getAge("February 10, 1991")} and I love computers.`,
-    education: () => `I studied at the University of Life.`,
-    interests: () => `I am interested in many things. Ask me what I like!`,
-    projects: getProjects,
-    contacts: getContacts,
-    error: (input) => `<div class="help-command">sh: Unknown command: ${input}</div><div class="help-command">See 'help' for more information.</div>`,
+    `<br />
+      <div class="command">Type one of the above to view. For eg. <span style="color: var(--secondary)">about</span></div>`,
+  about: () => `HN：いぬお（${getAge("July 22, 1995")}）
+    <br/>
+     フルスタックを目指す駆け出しエンジニア。
+     <br/>
+     現在はバックエンドエンジニアとして働いています。
+    <br/>
+  `,
+  history:
+    () => `学歴：<a href="https://www.tohoku.ac.jp/japanese/" target="_blank">東北大学</a>　学部卒業＆修士課程修了 </br>職歴：大手オフィス機器メーカーへ新卒入社。3年半バックエンド開発に従事。<br></br>現在に至る`,
+  skills: () => `
+  <div class="skill"><b>言語</b>: Python, C/C++<br /></div>
+  <div class="skill"><b>技術</b>: OAuth, Docker、Network, DB(MySQL, PostgreSQL, MariaDB)<br /></div>
+  <div class="skill"><b>経験</b>: PM、PG、データサイエンス<br /></div>
+  <div class="skill"><b>興味</b>: 言語[Typescript/Javascript, Go], 技術[Fintech, Cloud Computing, Kubernetes <br /></div><br />
+  Githubも参照ください<a href="https://github.com/mizu-orient" target="_blank">here</a>.
+<br />
+  `,
+  projects: getProjects,
+  contact: getContacts,
+  error: (input) =>
+    `<div class="help-command">sh: Unknown command: ${input}</div><div class="help-command">See \`help\` for info`,
+  blog: () => {
+    window.open("https://zenn.dev/inuo", "_blank");
+    return "";
+  },
+  github: () => {
+    window.open("https://github.com/mizu-orient", "_blank");
+    return "";
+  },
 };
 
 function getAge(dateString) {
-    const today = new Date();
-    const birthDate = new Date(dateString); /* 誕生日を取得 */
-    let age = today.getFullYear() - birthDate.getFullYear(); /* 年齢を計算 */
-    const m = today.getMonth() - birthDate.getMonth(); /* 月を取得 */
-    if(m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { /* 誕生日が来ていない場合 */
-        age--; /* 1歳引く */
-    }
-    return age;
+  const today = new Date();
+  const birthDate = new Date(dateString);
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+
+  return age;
 }
