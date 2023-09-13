@@ -17,6 +17,13 @@ export default async function handler(req, res) {
         link: "https://github.com/mizu-orient/newTomodachi",
         largeImage: "liberty-lg.png",
       },
+      {
+        name: "alertman",
+        description:"Discordの通知Bot",
+        stack: ["Discord Bot", "Typescript", "node.js", "Web-push", "docker", "docker compose"],
+        link: "https://github.com/mizu-orient/alertman",
+        largeImage: "liberty-lg.png",
+      },
     ];
 
     return res.json(projects);
